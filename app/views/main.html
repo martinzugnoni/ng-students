@@ -31,3 +31,27 @@
     </tbody>
   </table>
 </div>
+
+<div class="row marketing">
+  <h2>Add new Student</h2>
+  <form name="productForm" ng-submit="save()" role="form" novalidate>
+    <div class="form-group">
+      <label class="control-label" for="firstname">First name</label>
+      <input data-ng-model="formStudent.first_name"  type="text" class="form-control" id="firstname" placeholder="Student's first name" required>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="lastname">Last name</label>
+      <input data-ng-model="formStudent.last_name" type="text" class="form-control" id="lastname" placeholder="Student's last name" required>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="email">Email</label>
+      <input data-ng-model="formStudent.email" type="email" class="form-control" id="email" placeholder="Student's email address" required>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="dateofbirth">Date of birth</label>
+      <input data-ng-model="formStudent.date_of_birth" class="form-control" id="dateofbirth" type="date" name="date_of_birth" placeholder="Student's date of birth">
+    </div>
+    <button type="submit" class="btn btn-info" ng-disabled="productForm.$invalid">Save</button>
+    <button ng-click="reset()" class="btn btn-default">Reset</button>
+  </form>
+</div>
