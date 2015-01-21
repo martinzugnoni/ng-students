@@ -37,3 +37,17 @@ class TestStudentViewSet(APITestCase):
         resp = self.client.post('/api/students/', data=data)
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(Student.objects.count(), 0)
+
+    def test_student_destroy(self):
+        """Should delete the student with given 'pk' when /api/students/<pk> is requested with DELETE"""
+        StudentFactory(pk=1)
+        resp = self.client.delete('/api/students/1/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(Student.objects.count(), 0)
+
+    def test_student_destroy_not_found(self):
+        """Should return 404 and do not delete any student when no student was found with given 'pk' value"""
+        StudentFactory(pk=1)
+        resp = self.client.delete('/api/students/10/')
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(Student.objects.count(), 1)

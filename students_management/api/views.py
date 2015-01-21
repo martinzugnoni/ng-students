@@ -35,4 +35,7 @@ class StudentsViewSet(viewsets.ViewSet):
         pass
 
     def destroy(self, request, pk=None):
-        pass
+        """Deletes the student object with given 'pk' value"""
+        student = get_object_or_404(Student, pk=pk)
+        student.delete()
+        return Response(status=status.HTTP_200_OK)
