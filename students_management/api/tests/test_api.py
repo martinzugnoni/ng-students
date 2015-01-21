@@ -76,3 +76,25 @@ class TestStudentViewSet(APITestCase):
         StudentFactory(pk=1, first_name='Martin', email='a@a.com')
         resp = self.client.put('/api/students/10/', data={})
         self.assertEqual(resp.status_code, 404)
+
+    def test_student_partial_update(self):
+        """Should update only given fields when PATCH method is used"""
+        StudentFactory(pk=1, first_name='Martin')
+        data = {'first_name': 'Ivan'}
+        resp = self.client.patch('/api/students/1/', data=data)
+        self.assertEqual(resp.status_code, 200)
+        student = Student.objects.get(pk=1)
+        self.assertEqual(student.first_name, 'Ivan')
+
+    def test_student_partial_update_invalid_data(self):
+        """Should return 400 when given data is invalid"""
+        StudentFactory(pk=1, first_name='Martin', email='a@a.com')
+        data = {'invalid': 'data'}
+        resp = self.client.patch('/api/students/1/', data=data)
+        self.assertEqual(resp.status_code, 400)
+
+    def test_student_partial_update_not_found(self):
+        """Should return 404 when there's no student matching with given 'pk' value"""
+        StudentFactory(pk=1, first_name='Martin', email='a@a.com')
+        resp = self.client.patch('/api/students/10/', data={})
+        self.assertEqual(resp.status_code, 404)

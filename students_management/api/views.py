@@ -36,14 +36,22 @@ class StudentsViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         student.__dict__.update(**serializer.data)
         student.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response()
 
     def partial_update(self, request, pk=None):
         """(PATCH) Updates partial fields of the student object"""
-        pass
+        student = get_object_or_404(Student, pk=pk)
+        for key, value in request.data.items():
+            if hasattr(student, key):
+                setattr(student, key, value)
+            else:
+                # given data is invalid
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        student.save()
+        return Response()
 
     def destroy(self, request, pk=None):
         """Deletes the student object with given 'pk' value"""
         student = get_object_or_404(Student, pk=pk)
         student.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response()
