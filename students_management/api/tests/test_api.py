@@ -2,6 +2,8 @@ from rest_framework.test import APITestCase
 
 from students.tests.factories import StudentFactory
 
+from students.models import Student
+
 
 class TestStudentViewSet(APITestCase):
 
@@ -19,3 +21,19 @@ class TestStudentViewSet(APITestCase):
         resp = self.client.get('/api/students/1/?format=json')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.data['first_name'], 'Martin')
+
+    def test_student_create(self):
+        """Should create a new student when given data is valid"""
+        data = {'first_name': 'Martin', 'last_name': 'Livesay',
+                'email': 'martin.livesay@something.com',
+                'date_of_birth': '2013-02-12'}
+        resp = self.client.post('/api/students/', data=data)
+        self.assertEqual(resp.status_code, 201)
+        self.assertEqual(Student.objects.count(), 1)
+
+    def test_student_create_invalid_data(self):
+        """Should return 400 and not create the student when given data is not valid"""
+        data = {'invalid': 'data'}
+        resp = self.client.post('/api/students/', data=data)
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(Student.objects.count(), 0)
