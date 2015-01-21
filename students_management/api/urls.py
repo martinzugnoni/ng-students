@@ -1,11 +1,11 @@
-from django.conf.urls import patterns, url, include
-from rest_framework import routers
+from django.conf.urls import patterns, url
 
 from . import views
 
-router = routers.DefaultRouter()
-router.register(r'students', views.StudentsViewSet, base_name='students')
-
 urlpatterns = patterns('',
-    url(r'', include(router.urls)),
+    url(r'students/$',
+        views.StudentListCreateAPIView.as_view(), name='students_list'),
+
+    url(r'students/(?P<pk>[0-9]+)/$',
+        views.StudentRetrieveUpdateDestroyAPIView.as_view(), name='students_detail'),
 )

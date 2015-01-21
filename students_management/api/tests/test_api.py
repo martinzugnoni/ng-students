@@ -13,7 +13,7 @@ class TestStudentViewSet(APITestCase):
             StudentFactory()
         resp = self.client.get('/api/students/?format=json')
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.data), 2)
+        self.assertEqual(len(resp.data['results']), 2)
 
     def test_student_retrieve(self):
         """Should return the student matching given 'pk' when requesting /api/students/<pk>"""
@@ -42,7 +42,7 @@ class TestStudentViewSet(APITestCase):
         """Should delete the student with given 'pk' when /api/students/<pk> is requested with DELETE"""
         StudentFactory(pk=1)
         resp = self.client.delete('/api/students/1/')
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 204)
         self.assertEqual(Student.objects.count(), 0)
 
     def test_student_destroy_not_found(self):
@@ -89,7 +89,7 @@ class TestStudentViewSet(APITestCase):
     def test_student_partial_update_invalid_data(self):
         """Should return 400 when given data is invalid"""
         StudentFactory(pk=1, first_name='Martin', email='a@a.com')
-        data = {'invalid': 'data'}
+        data = {'date_of_birth': True}
         resp = self.client.patch('/api/students/1/', data=data)
         self.assertEqual(resp.status_code, 400)
 
