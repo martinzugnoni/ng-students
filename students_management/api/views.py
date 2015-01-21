@@ -29,9 +29,17 @@ class StudentsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-        pass
+        """(PUT) Updates the whole student object"""
+        student = get_object_or_404(Student, pk=pk)
+        serializer = StudentSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        student.__dict__.update(**serializer.data)
+        student.save()
+        return Response(status=status.HTTP_200_OK)
 
     def partial_update(self, request, pk=None):
+        """(PATCH) Updates partial fields of the student object"""
         pass
 
     def destroy(self, request, pk=None):

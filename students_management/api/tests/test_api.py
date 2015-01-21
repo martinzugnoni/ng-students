@@ -51,3 +51,28 @@ class TestStudentViewSet(APITestCase):
         resp = self.client.delete('/api/students/10/')
         self.assertEqual(resp.status_code, 404)
         self.assertEqual(Student.objects.count(), 1)
+
+    def test_student_update(self):
+        """Should update the student when all student data is provided"""
+        StudentFactory(pk=1, first_name='Martin', email='a@a.com')
+        data = {'first_name': 'Ivan', 'last_name': 'Livesay',
+                'email': 'ivan.livesay@something.com',
+                'date_of_birth': '2013-02-12'}
+        resp = self.client.put('/api/students/1/', data=data)
+        self.assertEqual(resp.status_code, 200)
+        student = Student.objects.get(pk=1)
+        self.assertEqual(student.first_name, 'Ivan')
+        self.assertEqual(student.email, 'ivan.livesay@something.com')
+
+    def test_student_update_invalid_data(self):
+        """Should return 400 when given data is invalid or not complete"""
+        StudentFactory(pk=1, first_name='Martin', email='a@a.com')
+        data = {'invalid': 'data'}
+        resp = self.client.put('/api/students/1/', data=data)
+        self.assertEqual(resp.status_code, 400)
+
+    def test_student_update_not_found(self):
+        """Should return 404 when there's no student matching with given 'pk' value"""
+        StudentFactory(pk=1, first_name='Martin', email='a@a.com')
+        resp = self.client.put('/api/students/10/', data={})
+        self.assertEqual(resp.status_code, 404)
