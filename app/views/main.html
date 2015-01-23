@@ -1,4 +1,5 @@
 <div class="row students-list">
+  <h2>List of students</h2>
   <div ng-hide="students.length" class="alert alert-warning" role="alert">
       <strong>Seems that no one has arrived yet</strong>. Take the change to add a new student in the following form.
   </div>
@@ -31,7 +32,7 @@
 </div>
 
 <div class="row student-form">
-  <h2>Add new Student</h2>
+  <h2>Add new student</h2>
   <form name="productForm" ng-submit="save()" role="form" novalidate>
     <input data-ng-model="formStudent.pk"  type="hidden" id="pk">
     <div class="form-group">
