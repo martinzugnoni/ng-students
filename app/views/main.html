@@ -15,6 +15,8 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
+        <th>Date of birth</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -23,9 +25,10 @@
         <td>{{student.first_name}}</td>
         <td>{{student.last_name}}</td>
         <td>{{student.email}}</td>
+        <td>{{student.date_of_birth || '---'}}</td>
         <td>
-          <button><span class="glyphicon glyphicon-pencil"></span></button>
-          <button><span class="glyphicon glyphicon-remove"></span></button>
+          <button ng-click="edit(student.pk)" type="button" class="btn btn-info btn-xs" title="Edit student"><i class="glyphicon glyphicon-pencil"></i></button>
+          <button ng-click="remove(student.pk)" type="button" class="btn btn-danger btn-xs" title="Remove student"><i class="glyphicon glyphicon-remove"></i></button>
         </td>
       </tr>
     </tbody>
@@ -52,6 +55,5 @@
       <input data-ng-model="formStudent.date_of_birth" class="form-control" id="dateofbirth" type="date" name="date_of_birth" placeholder="Student's date of birth">
     </div>
     <button type="submit" class="btn btn-info" ng-disabled="productForm.$invalid">Save</button>
-    <button ng-click="reset()" class="btn btn-default">Reset</button>
   </form>
 </div>

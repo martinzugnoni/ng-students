@@ -9,18 +9,25 @@
  */
 angular.module('ngStudentsApp')
   .controller('MainCtrl', function ($scope, Student) {
-    var students = Student.query(function () {
-      $scope.students = students.results;
-    });
-
+    $scope.students = [];
     $scope.formStudent = {};
 
-    $scope.reset = function () {
+    $scope.getStudents = function () {
+      var promise = Student.query(function () {
+        $scope.students = promise.results;
+      });
+    }
+
+    $scope.resetForm = function () {
       $scope.formStudent = {};
     }
 
     $scope.formatDate = function (date) {
-      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+      if (date) {
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+      } else {
+        return null;
+      }
     };
 
     $scope.save = function () {
@@ -33,12 +40,21 @@ angular.module('ngStudentsApp')
       student.$save();
 
       // clean the form
-      $scope.reset();
+      $scope.resetForm();
+
+      // load new list of students
+      $scope.getStudents();
     };
 
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+    $scope.remove = function (pk) {
+      Student.delete({ id: pk }, function () {
+        $scope.getStudents();
+      });
+    };
+
+    $scope.edit = function (pk) {
+      alert('Not implemented');
+    };
+
+    $scope.getStudents();
   });
