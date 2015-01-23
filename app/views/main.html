@@ -1,14 +1,9 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<div class="row students-list">
+  <div ng-hide="students.length" class="alert alert-warning" role="alert">
+      <strong>Seems that no one has arrived yet</strong>. Take the change to add a new student in the following form.
+  </div>
 
-<div class="row marketing">
-  <table class="table table-striped table-hover">
+  <table ng-show="students.length" class="table table-striped table-hover">
     <thead>
       <tr>
         <th>id</th>
@@ -35,7 +30,7 @@
   </table>
 </div>
 
-<div class="row marketing">
+<div class="row student-form">
   <h2>Add new Student</h2>
   <form name="productForm" ng-submit="save()" role="form" novalidate>
     <input data-ng-model="formStudent.pk"  type="hidden" id="pk">
