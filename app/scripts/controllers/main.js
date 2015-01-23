@@ -13,8 +13,8 @@ angular.module('ngStudentsApp')
     $scope.formStudent = {};
 
     $scope.getStudents = function () {
-      var promise = Student.query(function () {
-        $scope.students = promise.results;
+      var response = Student.query(function () {
+        $scope.students = response.results;
       });
     }
 
@@ -30,20 +30,33 @@ angular.module('ngStudentsApp')
       }
     };
 
+    $scope.newStudent = function () {
+      // create a Student instance and save it through the API
+      Student.save($scope.formStudent, function () {
+        $scope.resetForm();
+        $scope.getStudents();
+      });
+    };
+
+    $scope.updateStudent = function () {
+      // updates student with given data
+      Student.update({ id: $scope.formStudent.pk }, $scope.formStudent, function () {
+        $scope.resetForm();
+        $scope.getStudents();
+      });
+    };
+
     $scope.save = function () {
       // convert the date formart to the one expected for the API
       var date = $scope.formStudent.date_of_birth;
       $scope.formStudent.date_of_birth = $scope.formatDate(date);
 
-      // create a Student instance and save it through the API
-      var student = new Student($scope.formStudent);
-      student.$save();
-
-      // clean the form
-      $scope.resetForm();
-
-      // load new list of students
-      $scope.getStudents();
+      // depending of the available 'pk' attr or not, execute the proper action.
+      if (!$scope.formStudent.pk) {
+        $scope.newStudent();
+      } else {
+        $scope.updateStudent();
+      }
     };
 
     $scope.remove = function (pk) {
@@ -53,7 +66,10 @@ angular.module('ngStudentsApp')
     };
 
     $scope.edit = function (pk) {
-      alert('Not implemented');
+      var student = Student.get({ id: pk }, function () {
+        student.date_of_birth = new Date(student.date_of_birth + 'T03:00:00');  // hacky way of avoiding timezone offset in UTC-03
+        $scope.formStudent = student;
+      });
     };
 
     $scope.getStudents();

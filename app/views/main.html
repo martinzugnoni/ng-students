@@ -38,6 +38,7 @@
 <div class="row marketing">
   <h2>Add new Student</h2>
   <form name="productForm" ng-submit="save()" role="form" novalidate>
+    <input data-ng-model="formStudent.pk"  type="hidden" id="pk">
     <div class="form-group">
       <label class="control-label" for="firstname">First name</label>
       <input data-ng-model="formStudent.first_name"  type="text" class="form-control" id="firstname" placeholder="Student's first name" required>
